@@ -1,0 +1,84 @@
+/* Estilos para componentes responsivos */
+.curso-card {
+    transition: all 0.3s ease;
+}
+
+.curso-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.shadow-top {
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 -2px 4px -2px rgba(0, 0, 0, 0.1);
+  }
+.banner-principal {
+    background: linear-gradient(135deg, #4a6fa5 0%, #1e3a8a 100%);
+}
+
+.mobile-menu {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.menu-closed {
+    max-height: 0;
+    opacity: 0;
+}
+
+.menu-open {
+    max-height: 300px;
+    opacity: 1;
+}
+
+.categoria-btn.activo {
+    background-color: #4a6fa5;
+    color: white;
+}
+
+/* Estilos responsivos adicionales */
+@media (max-width: 768px) {
+    .flex-col-mobile {
+        flex-direction: column;
+    }
+    
+    .w-full-mobile {
+        width: 100%;
+    }
+    
+    .mt-4-mobile {
+        margin-top: 1rem;
+    }
+}
+
+/* Para dispositivos muy pequeños */
+@media (max-width: 480px) {
+    .text-sm-mobile {
+        font-size: 0.875rem;
+    }
+    
+    .px-2-mobile {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+/* Esto hace que el menú se oculte/muestre SOLO en celulares */
+@media (max-width: 768px) {
+    .menu-closed {
+        max-height: 0;
+        opacity: 0;
+    }
+    
+    .menu-open {
+        max-height: 300px;
+        opacity: 1;
+    }
+}
+
+/* Esto hace que el menú SIEMPRE se muestre en pantallas grandes */
+@media (min-width: 769px) {
+    .mobile-menu {
+        display: flex !important;
+        opacity: 1 !important;
+        max-height: none !important;
+    }
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Sistema de Cursos Online{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-white-600 text-black shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                <div class="flex items-center justify-between">
+                    <a href="{{ url_for('inicio') }}" class="text-2xl font-bold"><img src="{{ url_for('static', filename='img/NOVA.png') }}" alt="" style="width: 250px;"></a>
+                    <button id="menuBtn" class="md:hidden focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <nav id="mobileMenu" class="mobile-menu menu-closed md:flex md:items-center mt-4 md:mt-0 md:space-x-4 space-y-2 md:space-y-0">
+                    <a href="{{ url_for('inicio') }}" class="block md:inline-block hover:bg-blue-700 hover:text-white px-2 py-2 rounded">Inicio</a>
+                    <a href="{{ url_for('ver_cursos') }}" class="block md:inline-block hover:bg-blue-700 hover:text-white px-2 py-2 rounded">Cursos</a>
+                    {% if session.get('conectado') %}
+                        <span class="block md:inline-block px-2 py-2">Bienvenido, {{ session.get('email_usuario') }}</span>
+                        <a href="{{ url_for('logout') }}" class="block md:inline-block bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-center">Cerrar Sesión</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="block md:inline-block bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-center">Iniciar Sesión</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container mx-auto px-4 py-6">
+        {% block contenido %}{% endblock %}
+    </main>
+    
+    <footer class="bg-white-600 text-black py-6 shadow-top">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 NovaServiTec. Todos los derechos reservados.</p>
+            <p>Autor: <cite>Gunar Castro Iñigo</cite></p>
+        </div>
+    </footer>
+    
+    <script>
+    // Script para el menú móvil
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('menu-closed');
+                mobileMenu.classList.toggle('menu-open');
+            });
+        }
+
+        // Función de búsqueda para cursos
+        const busquedaInput = document.getElementById('busquedaInput');
+        if (busquedaInput) {
+            busquedaInput.addEventListener('keyup', function() {
+                const termino = busquedaInput.value.toLowerCase();
+                const cursoCards = document.querySelectorAll('.curso-card');
+                let encontrado = false;
+
+                cursoCards.forEach(function(card) {
+                    const titulo = card.querySelector('.curso-titulo').textContent.toLowerCase();
+                    const descripcion = card.querySelector('.curso-descripcion').textContent.toLowerCase();
+
+                    if (titulo.includes(termino) || descripcion.includes(termino)) {
+                        card.style.display = 'block';
+                        encontrado = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                const sinResultados = document.getElementById('sinResultados');
+                if (sinResultados) {
+                    sinResultados.style.display = encontrado ? 'none' : 'block';
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>

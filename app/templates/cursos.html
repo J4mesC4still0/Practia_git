@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Cursos - Sistema de Cursos Online{% endblock %}
+
+{% block contenido %}
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <h1 class="text-2xl md:text-3xl font-bold text-blue-600 mb-4 md:mb-0">Cursos Disponibles</h1>
+    <div class="w-full md:w-auto">
+        <div class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ url_for('ver_cursos') }}" class="categoria-btn px-4 py-2 border rounded text-center {% if not categoria %}bg-blue-500 text-white{% else %}bg-white hover:bg-blue-100{% endif %}">
+                    Todos
+                </a>
+                <a href="{{ url_for('ver_cursos', categoria='programacion') }}" class="categoria-btn px-4 py-2 border rounded text-center {% if categoria == 'programacion' %}bg-blue-500 text-white{% else %}bg-white hover:bg-blue-100{% endif %}">
+                    Programación
+                </a>
+                <a href="{{ url_for('ver_cursos', categoria='diseno') }}" class="categoria-btn px-4 py-2 border rounded text-center {% if categoria == 'diseno' %}bg-blue-500 text-white{% else %}bg-white hover:bg-blue-100{% endif %}">
+                    Diseño Gráfico
+                </a>
+            </div>
+            <input type="text" id="busquedaInput" placeholder="Buscar cursos..." class="border border-gray-300 rounded px-4 py-2 w-full text-base">
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="listaCursos">
+    {% for curso in cursos %}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden curso-card">
+        <div class="h-40 bg-gray-200 flex items-center justify-center">
+            <img src="{{ curso.imagen }}" alt="{{ curso.titulo }}" class="w-20 h-20 object-contain">
+        </div>
+        <div class="p-4">
+            <h3 class="text-lg font-semibold mb-2 curso-titulo">{{ curso.titulo }}</h3>
+            <p class="text-gray-600 mb-2 curso-descripcion">{{ curso.descripcion }}</p>
+            <p class="text-sm text-gray-500 mb-4">
+                <span class="font-medium">Instructor:</span> {{ curso.instructor }}
+            </p>
+            <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">{{ curso.duracion }}</span>
+                <a href="{{ url_for('detalle_curso', curso_id=curso.id) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">Ver Detalles</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div id="sinResultados" class="hidden text-center py-8 text-gray-500 text-lg">
+    No se encontraron cursos que coincidan con tu búsqueda.
+</div>
+{% endblock %}
